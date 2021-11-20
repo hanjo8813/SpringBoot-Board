@@ -1,12 +1,12 @@
 # Spring Boot Board
-> Spring Boot + JPA로 게시판 만들기
+> 새로운 기술을 도전하며 간단한 게시판 구현하기
 
 <br>
 
 ## 링크
 
 - 게시판 페이지 : https://board.hanjo.xyz 
-- Rest Docs : https://boardapi.hanjo.xyz
+- Rest Docs : https://boardapi.hanjo.xyz/docs/index.html
 
 <br>
 
@@ -32,9 +32,9 @@
 
 ### Backend
 
-- Java 11
-- Spring Boot
-- Gradle
+- Java 17
+- Spring Boot 2.5.5
+- Gradle 7.2
 - JPA
 - Junit 5, Rest Docs
 - MySQL
@@ -47,6 +47,7 @@
 ### DevOps
 
 - nginx
+- GitHub Actions
 - Docker
 - AWS EC2 (Ubuntu)
 - AWS RDS
