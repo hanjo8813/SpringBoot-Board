@@ -39,3 +39,13 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img
+
+      # EC2에서 Docker 실행
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ AWS_EC2_HOST }}
+          username: ${{ AWS_EC2_USERNAME }}
+          key: ${{ AWS_EC2_PRIVATE_KEY }}
+          script: |
+            docker run -d --name spring_con -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=prod" ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img
