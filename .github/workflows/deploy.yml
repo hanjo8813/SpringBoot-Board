@@ -49,21 +49,18 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           port: ${{ secrets.AWS_EC2_PORT }}
           source: "./deploy/*"
-          target: "/srv/deploy"
+          target: "/srv"
 
       # EC2에서 Docker 실행
-#      - name: Deploy to EC2
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.AWS_EC2_HOST }}
-#          username: ${{ secrets.AWS_EC2_USERNAME }}
-#          port: ${{ secrets.AWS_EC2_PORT }}
-#          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
-#          script: |
-#            cd /srv/SpringBoot-Board/
-#            git pull origin main
-#            cd /srv/SpringBoot-Board/deploy/
-#
-#            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USERNAME }}
+          port: ${{ secrets.AWS_EC2_PORT }}
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          script: |
+            cd /srv/deploy
+            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
 
 
