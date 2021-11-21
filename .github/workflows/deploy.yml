@@ -40,15 +40,30 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img
 
-      # EC2에서 Docker 실행
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+      # EC2로 쉘 스크립트 전송
+      - name: Send scripts to EC2
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AWS_EC2_HOST }}
           username: ${{ secrets.AWS_EC2_USERNAME }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
-          script: |
-            cd ~/deploy/
-            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
+          port: ${{ secrets.AWS_EC2_PORT }}
+          source: "./deploy/*"
+          target: "/srv/deploy"
+
+      # EC2에서 Docker 실행
+#      - name: Deploy to EC2
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.AWS_EC2_HOST }}
+#          username: ${{ secrets.AWS_EC2_USERNAME }}
+#          port: ${{ secrets.AWS_EC2_PORT }}
+#          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+#          script: |
+#            cd /srv/SpringBoot-Board/
+#            git pull origin main
+#            cd /srv/SpringBoot-Board/deploy/
+#
+#            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
 
 
