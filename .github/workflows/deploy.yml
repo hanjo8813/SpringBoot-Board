@@ -48,4 +48,7 @@ jobs:
           username: ${{ secrets.AWS_EC2_USERNAME }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
-            docker run -d --name spring_con -p 8080:8080 -e "SPRING_PROFILES_ACTIVE=prod" ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:spring_img
+            cd ~/deploy/
+            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
+
+
