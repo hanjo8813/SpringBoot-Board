@@ -18,7 +18,7 @@ else
     sleep 60
 
     echo "DOWN BLUE"
-    docker-compose -f board-blue docker-compose.blue.yml down
+    docker-compose -p board-blue -f docker-compose.blue.yml down
 fi
 
 
