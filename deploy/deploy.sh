@@ -1,6 +1,6 @@
 ###!/bin/bash
 
-EXIST_BLUE=$(docker-compose -f docker-compose.blue.yml ps | grep blue)
+EXIST_BLUE=$(docker ps | grep blue)
 
 ## 만약 blue(8081)가 구동중이 아니라면? : blue(8081)를 실행 -> green(8082)은 종료
 if [ -z "$EXIST_BLUE" ]; then
