@@ -51,7 +51,7 @@ jobs:
           source: "./deploy/*"
           target: "/srv"
 
-      # EC2에서 Docker 실행
+      # EC2에서 docker-compose 실행
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -61,6 +61,4 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
             cd /srv/deploy
-            bash deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_REPOSITORY }}
-
-
+            bash deploy.sh

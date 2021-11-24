@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  board_blue:
+    image: hanjo8813/board:spring_img
+    ports:
+      - "8081:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+# docker-compose -f docker-compose.blue.yml up -d
