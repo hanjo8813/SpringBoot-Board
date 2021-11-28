@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  spring:
+    image: ${DOCKER_IMAGE}
+    container_name: temp_con
+    ports:
+      - "8080:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    env_file:
+      - DB.env
+
+
+# docker-compose up -d
+# docker-compose -p temp_compose up -d

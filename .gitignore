@@ -2,6 +2,7 @@
 
 dev-db.yaml
 *.html
+*.env
 
 # --------- intelliJ 기본 설정 ---------
 
