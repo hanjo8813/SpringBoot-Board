@@ -74,6 +74,13 @@ asciidoctor {
 
 // ---------------------------- ( html 변환 ) ----------------------------
 
+// 빌드시 snippets 을 참조 -> docs/asciidoc/*.adoc 에서 작성한대로 html 생성 -> resources/static/docs 경로로 반환
+bootJar {
+    dependsOn asciidoctor
+    from "${asciidoctor.outputDir}"
+    into 'static/docs'
+}
+
 // But!! 위의 방법을 사용시 캐시때문에 html 덮어쓰기가 잘 안될수도 있음 따라서 아래와 같은 방법 사용
 // 1. build -> copyDocument 태스크 실행
 // 2. asciidoctor 실행시 기존 html 미리 삭제 (doFirst)

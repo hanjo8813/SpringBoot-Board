@@ -11,7 +11,6 @@ DB_PASSWORD=$6
 # 빌드된 최신 이미지 pull
 echo "================== PULL docker image =================="
 docker pull $DOCKER_USERNAME/$DOCKER_REPOSITORY:$DOCKER_TAG
-echo "@@@@@@@@ DONE @@@@@@@@"
 
 # 환경변수로 docker-compose 전체용 .env 파일 생성
 echo "================== UPDATE '.env' file =================="
@@ -27,26 +26,21 @@ EXIST_BLUE=$(docker ps | grep blue)
 if [ -z "$EXIST_BLUE" ]; then
     echo "================== RUN BLUE =================="
     docker-compose -p compose_blue -f docker-compose.blue.yml up -d
-    echo "@@@@@@@@ DONE @@@@@@@@"
 
     sleep 60
 
     echo "================== DOWN GREEN =================="
     docker-compose -p compose_green -f docker-compose.green.yml down
-    echo "@@@@@@@@ DONE @@@@@@@@"
 else
     echo "================== RUN GREEN =================="
     docker-compose -p compose_green -f docker-compose.green.yml up -d
-    echo "@@@@@@@@ DONE @@@@@@@@"
 
     sleep 60
 
     echo "================== DOWN BLUE =================="
     docker-compose -p compose_blue -f docker-compose.blue.yml down
-    echo "@@@@@@@@ DONE @@@@@@@@"
 fi
 
 # 사용하지 않는 이미지(구 버전 이미지) 삭제
 echo "================== DELETE unused images  =================="
 docker image prune -f
-echo "@@@@@@@@ DONE @@@@@@@@"
