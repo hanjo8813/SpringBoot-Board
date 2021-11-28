@@ -8,6 +8,11 @@ DB_URL=$4
 DB_USERNAME=$5
 DB_PASSWORD=$6
 
+# 빌드된 최신 이미지 pull
+echo "================== PULL docker image =================="
+docker pull $DOCKER_USERNAME/$DOCKER_REPOSITORY:$DOCKER_TAG
+echo "@@@@@@@@ DONE @@@@@@@@"
+
 # 환경변수로 docker-compose 전체용 .env 파일 생성
 echo "================== UPDATE '.env' file =================="
 echo -e "DOCKER_USERNAME=$DOCKER_USERNAME\nDOCKER_REPOSITORY=$DOCKER_REPOSITORY\nDOCKER_TAG=$DOCKER_TAG" > .env
@@ -16,29 +21,32 @@ echo -e "DOCKER_USERNAME=$DOCKER_USERNAME\nDOCKER_REPOSITORY=$DOCKER_REPOSITORY\
 echo "================== UPDATE 'DB.env' file =================="
 echo -e "DB_URL=$DB_URL\nDB_USERNAME=$DB_USERNAME\nDB_PASSWORD=$DB_PASSWORD" > DB.env
 
-# 기존 이미지는 삭제 + 빌드된 최신 이미지 pull
-echo "================== UPDATE docker image =================="
-docker rmi $DOCKER_USERNAME/$DOCKER_REPOSITORY:$DOCKER_TAG
-docker pull $DOCKER_USERNAME/$DOCKER_REPOSITORY:$DOCKER_TAG
-sleep 20
-
 ## 만약 blue(8081)가 구동중이 아니라면? : blue(8081)를 실행 -> green(8082)은 종료
 EXIST_BLUE=$(docker ps | grep blue)
 
 if [ -z "$EXIST_BLUE" ]; then
     echo "================== RUN BLUE =================="
     docker-compose -p compose_blue -f docker-compose.blue.yml up -d
+    echo "@@@@@@@@ DONE @@@@@@@@"
 
     sleep 60
 
     echo "================== DOWN GREEN =================="
     docker-compose -p compose_green -f docker-compose.green.yml down
+    echo "@@@@@@@@ DONE @@@@@@@@"
 else
     echo "================== RUN GREEN =================="
     docker-compose -p compose_green -f docker-compose.green.yml up -d
+    echo "@@@@@@@@ DONE @@@@@@@@"
 
     sleep 60
 
     echo "================== DOWN BLUE =================="
     docker-compose -p compose_blue -f docker-compose.blue.yml down
+    echo "@@@@@@@@ DONE @@@@@@@@"
 fi
+
+# 사용하지 않는 이미지(구 버전 이미지) 삭제
+echo "================== DELETE unused images  =================="
+docker image prune -f
+echo "@@@@@@@@ DONE @@@@@@@@"
