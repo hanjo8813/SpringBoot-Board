@@ -6,6 +6,7 @@ import com.example.boardbackend.dto.response.UserIdResponse;
 import com.example.boardbackend.common.error.exception.IllegalArgException;
 import com.example.boardbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,15 @@ public class UserController {
     public ResponseEntity resign(@PathVariable("id") Long id){
         userService.deleteUserById(id);
         return ResponseEntity.ok().build();
+    }
+
+    ///////////////////////////////////////////////////////
+    @Value("${spring.datasource.url}")
+    String url;
+
+    @GetMapping("/test")
+    public String test(){
+        return url;
     }
 
 }
