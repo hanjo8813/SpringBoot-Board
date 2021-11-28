@@ -15,6 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # 프로젝트 소유권 변경 (for asciidoctor -> html copy)
+
+
       # Gradle
       - name: Set up JDK 17
         uses: actions/setup-java@v2
