@@ -4,6 +4,8 @@ plugins {
 	id 'java'
 	// asciidoctor 플러그인 추가
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
+	// JACOCO
+	id 'jacoco'
 }
 
 group = 'com.example'
@@ -85,17 +87,43 @@ bootJar {
 // 1. build -> copyDocument 태스크 실행
 // 2. asciidoctor 실행시 기존 html 미리 삭제 (doFirst)
 // 3. 그리고 다시 html을 static/docs 하위로 북붙
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+//asciidoctor.doFirst {
+//	delete file('src/main/resources/static/docs')
+//}
+//
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	from file("build/docs/asciidoc")
+//	into file("src/main/resources/static/docs")
+//}
+
+// ---------------------------- ( JACOCO ) ----------------------------
+
+jacoco {
+	toolVersion = "0.8.7"
 }
 
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
+jacocoTestReport {
+	reports {
+		xml.enabled(true)	// codecov에서는 xml 결과를 사용
+		html.enabled(true)	// html은 로컬에서 바로 보기 전용
+	}
+	finalizedBy 'jacocoTestCoverageVerification'
 }
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.0
+			}
+		}
+	}
+}
+
+// ---------------------------- ( Build ) ----------------------------
 
 build {
-	dependsOn copyDocument
+//	dependsOn copyDocument
+	dependsOn jacocoTestReport
 }
-
