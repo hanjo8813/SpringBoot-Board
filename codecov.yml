@@ -12,6 +12,7 @@ coverage:
         informational: true
         only_pulls: false
     patch: false
+    
 comment:
   layout: "reach, diff, flags, files"
   behavior: default
