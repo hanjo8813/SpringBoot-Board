@@ -7,8 +7,10 @@ import lombok.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
-@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private Long id;

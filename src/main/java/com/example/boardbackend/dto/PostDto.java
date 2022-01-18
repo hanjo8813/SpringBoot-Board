@@ -10,8 +10,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostDto {
     private Long id;

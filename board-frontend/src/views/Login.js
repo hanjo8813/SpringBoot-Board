@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import origin from "../api/origin";
 
 
 function Login(props) {
-
-  // Select Origin
-  const local = 'http://localhost:8080/api';
-  const deploy = 'https://boardapi.hanjo.xyz/api';
-  const origin = local;
-
 
   // State
   const [loginInfo, setLoginInfo] = useState({

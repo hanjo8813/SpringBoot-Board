@@ -46,13 +46,4 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    ///////////////////////////////////////////////////////
-    @Value("${spring.datasource.url}")
-    String url;
-
-    @GetMapping("/test")
-    public String test(){
-        return url;
-    }
-
 }

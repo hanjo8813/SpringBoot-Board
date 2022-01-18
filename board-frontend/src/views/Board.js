@@ -3,43 +3,40 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import Menu from '../components/Menu';
-
+import origin from "../api/origin";
 
 function Board(props) {
-    // Select Origin
-    const local = 'http://localhost:8080/api';
-    const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = local;
 
     // State
     const query = qs.parse(props.location.search, { ignoreQueryPrefix: true });
     const page = query.page;
     const sort = query.sort;
     const size = 10;
-    const search = query.search;
+    const searchType = query.searchType;
     const keyword = query.keyword;
     const [pageList, setPageList] = useState([]);
     const [posts, setPosts] = useState([]);
     const [total, setTotal] = useState();
     const [prev, setPrev] = useState();
     const [next, setNext] = useState();
-    const [inputKeyword, setInputKeyword] = useState();
-    const [searchType, setSearchType] = useState("");
-
+    const [inputKeyword, setInputKeyword] = useState("");
+    const [inputSearchType, setInputSearchType] = useState("ALL");
 
     // Effect
     useEffect(() => {
+        console.log(searchType)
+        console.log(keyword)
+        
         // 페이징 조회 요청
-        axios.get(origin + "/post", { params: { page: page - 1, size: size, sort: sort } })
+        axios.get(origin + "/post", { params: { page: page - 1, size: size, sort: sort, searchType : searchType, keyword : keyword} })
             .then(res => {
-                setPosts(res.data.content)
-            })
-        // 총 게시글 수 받고 페이지 수 계산
-        axios.get(origin + "/post/total")
-            .then(res => {
+                // 게시판 렌더링
+                setPosts(res.data.content);
+
                 // 전체 페이지 숫자
-                let totalPageNum = Math.ceil(res.data / size);
+                let totalPageNum = res.data.totalPages
                 setTotal(totalPageNum);
+
                 // 현재 페이지가 속한 범위의 리스트
                 let startPage = page % 10 == 0 ? (Math.floor(page / 10) - 1) * 10 + 1 : Math.floor(page / 10) * 10 + 1;
                 let endPage = startPage + 9 < totalPageNum ? startPage + 9 : totalPageNum;
@@ -48,35 +45,26 @@ function Board(props) {
                     pagesNumList.push(i);
                 }
                 setPageList(pagesNumList);
+
                 // 이전-다음 페이지 지정 -> *1 페이지로 이동
                 setPrev(startPage - 10);
-                setNext(endPage + 1);
+                setNext(endPage + 1); 
             })
     }, [props]);
 
     // Handler
-    const searchTypeHandler = (e) => setSearchType(e.currentTarget.value)
+    const inputSearchTypeHandler = (e) => setInputSearchType(e.currentTarget.value)
     const inputKeywordHandler = (e) => setInputKeyword(e.currentTarget.value)
 
     // Button
-    const movePage = (page) => {
-        props.history.push(`/board?page=${page}&sort=${sort}`);
+    const movePage = (inputPage) => {
+        props.history.push(`/board?page=${inputPage}&sort=${sort}&searchType=${searchType}&keyword=${keyword}`);
     }
-    const changeSort = (sort) => {
-        props.history.push(`/board?page=${page}&sort=${sort}`);
+    const changeSort = (inputSort) => {
+        props.history.push(`/board?page=${page}&sort=${inputSort}&searchType=${searchType}&keyword=${keyword}`);
     }
     const changeSearch = () => {
-        // `/board?page=${page}&sort=${sort}&search=${}&keyword=${}`
-        console.log(inputKeyword)
-        axios.get(origin + "/post/search", { params: { searchType: searchType, keyword: inputKeyword, page: 0, size: size, sort: sort} })
-            .then(res => {
-                console.log(res.data.content);
-            })
-            .catch(err => {
-                console.log(err.response)
-                if (err.response.status == 400 || err.response.status == 404)
-                    alert(err.response.data.message);
-            });
+        props.history.push(`/board?page=1&sort=id,DESC&searchType=${inputSearchType}&keyword=${inputKeyword}`);
     }
 
     return (
@@ -90,9 +78,9 @@ function Board(props) {
             <hr /><br />
 
             <div className="div_wrapper_search">
-                <input type="radio" name="search" value="TITLE" onChange={searchTypeHandler} /> 제목
-                <input type="radio" name="search" value="CONTENT" onChange={searchTypeHandler} /> 내용
-                <input type="radio" name="search" value="AUTHOR" onChange={searchTypeHandler} /> 작성자
+                <input type="radio" name="search" value="TITLE" onChange={inputSearchTypeHandler} /> 제목
+                <input type="radio" name="search" value="CONTENT" onChange={inputSearchTypeHandler} /> 내용
+                <input type="radio" name="search" value="AUTHOR" onChange={inputSearchTypeHandler} /> 작성자
                 <input style={{ marginTop: "15px" }} type="text" placeholder="검색어를 입력하세요" onChange={inputKeywordHandler} />
                 <button onClick={changeSearch}>검색</button>
             </div>
