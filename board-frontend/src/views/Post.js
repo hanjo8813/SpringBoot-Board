@@ -2,13 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../components/Menu';
 import { Link } from 'react-router-dom';
+import origin from "../api/origin";
 
 function Post(props) {
-
-    // Select Origin
-    const local = 'http://localhost:8080/api';
-    const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = local;
 
     // State
     const postId = props.match.params.postId;

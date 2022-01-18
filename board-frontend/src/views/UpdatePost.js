@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../components/Menu';
+import origin from "../api/origin";
 
 function UpdatePost(props) {
-
-    // Select Origin
-    const local = 'http://localhost:8080/api';
-    const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = local;
-
+    
     // State
     const userId = localStorage.getItem("userId");
     const postId = props.match.params.postId;

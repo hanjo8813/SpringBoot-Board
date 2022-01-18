@@ -17,14 +17,17 @@
    - 로그인
    - 내 정보 조회
    - 회원탈퇴
-- 게시판 기능
+- 게시글 기능
    - 게시글 작성
-   - 내 게시글 조회
-   - 게시글 페이징 조회
-   - 게시글 단건 조회
-   - 조회수 업데이트
+   - 게시글 조회
    - 게시글 수정
    - 게시글 삭제
+- 게시판 기능
+   - 내 게시글 조회
+   - 게시글 페이징 조회
+   - 조회수 업데이트
+   - 검색
+   - 생성일/조회수 정렬
 
 <br>
 
@@ -37,7 +40,7 @@
 - Gradle 7.2
 - JPA
 - Junit 5, Rest Docs
-- MySQL
+- MySQL 8.0.25
 
 ### Frontend
 
@@ -46,12 +49,10 @@
 
 ### DevOps
 
-- nginx
 - GitHub Actions
-- Docker
-- AWS EC2 (Ubuntu)
-- AWS RDS
-- AWS S3 + CloudFront
+- Nginx
+- Docker, docker-compose
+- AWS EC2 / RDS / S3 / CloudFront
 
 <br>
 

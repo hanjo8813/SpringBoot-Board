@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../components/Menu';
+import origin from "../api/origin";
 
 function Posting(props) {
-
-    // Select Origin
-    const local = 'http://localhost:8080/api';
-    const deploy = 'https://boardapi.hanjo.xyz/api';
-    const origin = local;
 
     // State
     const userId = localStorage.getItem("userId");
@@ -32,7 +28,7 @@ function Posting(props) {
         axios.post(origin + "/post", postInfo)
             .then(res => {
                 alert("게시물이 등록되었습니다.")
-                props.history.push("/board/1");
+                props.history.push(`/post/${res.data.id}`);
             })
             .catch(err => {
                 if (err.response.status == 400 || err.response.status == 404)

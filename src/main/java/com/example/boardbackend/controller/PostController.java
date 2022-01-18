@@ -5,17 +5,21 @@ import com.example.boardbackend.dto.request.UpdatePostRequest;
 import com.example.boardbackend.dto.request.UpdateViewRequest;
 import com.example.boardbackend.dto.response.BoardResponse;
 import com.example.boardbackend.service.PostService;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
@@ -32,15 +36,12 @@ public class PostController {
 
     // 게시물 전체 조회 (페이징)
     @GetMapping
-    public ResponseEntity<Page<BoardResponse>> getAllPosts(Pageable pageable) {
-        Page<BoardResponse> response = postService.findPostsAll(pageable);
-        return ResponseEntity.ok(response);
-    }
-
-    // 총 게시글 수 조회
-    @GetMapping("/total")
-    public ResponseEntity<Long> getTotalCount() {
-        Long response = postService.countPostsAll();
+    public ResponseEntity<Page<BoardResponse>> getAllPosts(
+        @RequestParam("searchType") SearchType searchType,
+        @RequestParam(value = "keyword") String keyword,
+        Pageable pageable
+    ) {
+        Page<BoardResponse> response = postService.findPostsAll(searchType, keyword, pageable);
         return ResponseEntity.ok(response);
     }
 
@@ -84,17 +85,5 @@ public class PostController {
         postService.deletePostById(id);
         return ResponseEntity.ok().build();
     }
-
-    // 검색
-    @GetMapping("/search")
-    public ResponseEntity<Page<BoardResponse>> searchPost(
-            @RequestParam("searchType") SearchType searchType,
-            @RequestParam(value = "keyword") @NotBlank String keyword,
-            Pageable pageable
-    ) {
-        Page<BoardResponse> response = postService.findPostsByKeyword(searchType, keyword, pageable);
-        return ResponseEntity.ok(response);
-    }
-
 
 }
