@@ -4,9 +4,10 @@
 <br>
 
 ## 링크
+> 과금 관련 서비스 종료
 
-- 게시판 페이지 : https://board.hanjo.xyz 
-- Rest Docs : https://boardapi.hanjo.xyz/docs/index.html
+- 게시판 페이지 : ~~https://board.hanjo.xyz~~
+- Rest Docs : ~~https://boardapi.hanjo.xyz/docs/index.html~~
 
 <br>
 
